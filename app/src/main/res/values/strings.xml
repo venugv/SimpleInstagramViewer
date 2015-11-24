@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Simple Instagram Viewer</string>
+    <string name="landing_page">Popular Instagram Pictures</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_picture_detail">Picture Detail</string>
+    <string name="long_string">Really really long text, spanning multiple lines.  A test for spanning multiple lines, this should work no matter how long a comment should be.</string>
+</resources>

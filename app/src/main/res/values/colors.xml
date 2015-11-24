@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#255156</color>
+    <color name="colorPrimaryDark">#0b373c</color>
+    <color name="colorAccent">#149134</color>
+    <color name="listBg">#A4D0D5</color>
+    <color name="imagePlaceholder">#32393D</color>
+    <color name="cardBg">#F2FFFF</color>
+    <color name="usernameBg">#2F4F4F</color>
+    <color name="captionBg">#224143</color>
+    <color name="commentBg">#35586C</color>
+    <color name="commentUsernameBg">#235624</color>
+</resources>

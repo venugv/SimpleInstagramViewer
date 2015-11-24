@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/listBg"
+    android:padding="5dp"
+    tools:activity="com.codepath.simpleinstagramviewer.ui.PictureDetailActivity">
+
+    <ImageView
+        android:id="@+id/userProfile"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@color/imagePlaceholder" />
+
+    <TextView
+        android:id="@+id/personName"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/userProfile"
+        android:text="Person Name"
+        android:textColor="@color/usernameBg"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/elapsedTime"
+        style="@android:style/TextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:text="24m" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@id/elapsedTime"
+        android:src="@drawable/ic_timeline" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/userProfile"
+        android:layout_marginTop="15dp"
+        android:background="@color/listBg" />
+</RelativeLayout>
