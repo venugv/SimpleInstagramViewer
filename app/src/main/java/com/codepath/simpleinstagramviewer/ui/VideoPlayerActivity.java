@@ -17,7 +17,8 @@ import com.codepath.simpleinstagramviewer.jsonhandler.DataLoader;
 /**
  * Created by vvenkatraman on 11/24/15.
  */
-public class VideoPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
+public class VideoPlayerActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener,
+    MediaPlayer.OnCompletionListener {
     private static final String TAG = VideoPlayerActivity.class.getName();
     VideoView videoView;
     int position = -1;
@@ -42,6 +43,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements MediaPlaye
 
         this.videoView = (VideoView) findViewById(R.id.videoView);
         this.videoView.setVideoURI(Uri.parse(DataLoader.getPicture(position).getVideoURL()));
+        this.videoView.setOnPreparedListener(this);
+        this.videoView.setOnCompletionListener(this);
         MediaController mediaController = new
                 MediaController(this);
         mediaController.setAnchorView(videoView);
@@ -59,5 +62,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements MediaPlaye
     public void onPrepared(MediaPlayer mp) {
         Log.i(TAG, "Duration = " +
                 videoView.getDuration());
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        this.finish();
     }
 }

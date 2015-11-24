@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +45,8 @@ public class PictureDetailActivity extends AppCompatActivity {
             getWindow().setEnterTransition(fadeTransform);
             getWindow().setExitTransition(fadeTransform);
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         this.position = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
         this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -58,6 +61,17 @@ public class PictureDetailActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this));
         DataLoader.fetchCommentsForPhoto(this, position);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void init(InstagramPicture instagramPicture) {

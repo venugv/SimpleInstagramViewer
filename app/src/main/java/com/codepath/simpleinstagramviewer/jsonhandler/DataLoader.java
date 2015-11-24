@@ -72,7 +72,6 @@ public class DataLoader {
                         }
                         instagramPhoto.setType(photo.getString("type"));
                         if (instagramPhoto.getType().equals("video")) {
-                            Log.d(TAG, "+++++++++++++ video found +++++++++++++" + "userName=" + instagramPhoto.getUsername());
                             instagramPhoto.setVideoURL(photo.getJSONObject("videos").
                                     getJSONObject("standard_resolution").getString("url"));
                         }
