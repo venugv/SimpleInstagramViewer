@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -74,7 +76,13 @@ public class PopularPictureViewerActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        DataLoader.checkRefreshStatus(new WeakReference<PopularPictureViewerActivity>(this));
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DataLoader.checkRefreshStatus(new WeakReference<>(PopularPictureViewerActivity.this));
+            }
+        }, 100);
     }
 
     public SwipeRefreshLayout getSwipeContainer() {
