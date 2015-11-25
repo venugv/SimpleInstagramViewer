@@ -1,4 +1,4 @@
-package com.codepath.simpleinstagramviewer.ui;
+package com.codepath.simpleinstagramviewer.activity;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.jsonhandler.DataLoader;
+import com.codepath.simpleinstagramviewer.data.DataLoader;
 
 /**
  * Created by vvenkatraman on 11/24/15.

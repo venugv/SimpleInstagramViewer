@@ -1,16 +1,16 @@
-package com.codepath.simpleinstagramviewer.model;
+package com.codepath.simpleinstagramviewer.data;
 
 /**
  * Created by vvenkatraman on 11/17/15.
  */
-public class InstagramPictureComment {
+public class PictureComment {
     private String comment;
     private String userName;
     private String profilePicURL;
     private String submittedTime;
 
-    public InstagramPictureComment(String comment, String userName, String profilePicURL,
-                                   String submittedTime) {
+    public PictureComment(String comment, String userName, String profilePicURL,
+                          String submittedTime) {
         this.comment = comment;
         this.userName = userName;
         this.profilePicURL = profilePicURL;

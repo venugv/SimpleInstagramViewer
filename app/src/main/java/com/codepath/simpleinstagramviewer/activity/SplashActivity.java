@@ -1,5 +1,6 @@
-package com.codepath.simpleinstagramviewer.ui;
+package com.codepath.simpleinstagramviewer.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.transition.Transition;
 import android.transition.TransitionInflater;
 
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.jsonhandler.DataLoader;
+import com.codepath.simpleinstagramviewer.data.DataLoader;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by vvenkatraman on 11/23/15.
@@ -33,7 +36,10 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        DataLoader.fetchPopularPhotos(this, true);
+        DataLoader.fetchPopularPhotos(new WeakReference<Context>(this), true);
+    }
+
+    public void onLoadFinished() {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
@@ -41,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                 Intent mainIntent = new Intent(SplashActivity.this, PopularPictureViewerActivity.class);
                 startActivity(mainIntent);
             }
-        }, 2000);
+        }, 1000);
     }
 
     @Override

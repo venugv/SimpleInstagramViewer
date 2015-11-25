@@ -1,11 +1,13 @@
-package com.codepath.simpleinstagramviewer.model;
+package com.codepath.simpleinstagramviewer.data;
+
+import com.codepath.simpleinstagramviewer.data.PictureComment;
 
 import java.util.ArrayList;
 
 /**
  * Created by vvenkatraman on 11/17/15.
  */
-public class InstagramPicture {
+public class PopularPicture {
     String username;
     private String type;
     String caption;
@@ -17,7 +19,7 @@ public class InstagramPicture {
     String submittedTime;
     int commentsCount;
     private String id;
-    ArrayList<InstagramPictureComment> comments = new ArrayList<InstagramPictureComment>();
+    ArrayList<PictureComment> comments = new ArrayList<PictureComment>();
 
     public int getCommentsCount() {
         return commentsCount;
@@ -27,11 +29,11 @@ public class InstagramPicture {
         this.commentsCount = commentsCount;
     }
 
-    public ArrayList<InstagramPictureComment> getComments() {
+    public ArrayList<PictureComment> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<InstagramPictureComment> comments) {
+    public void setComments(ArrayList<PictureComment> comments) {
         this.comments = comments;
     }
 
@@ -53,7 +55,7 @@ public class InstagramPicture {
 
     @Override
     public String toString() {
-        return "InstagramPicture{" +
+        return "PopularPicture{" +
                 "username='" + username + '\'' +
                 ", caption='" + caption + '\'' +
                 ", imageURL='" + imageURL + '\'' +

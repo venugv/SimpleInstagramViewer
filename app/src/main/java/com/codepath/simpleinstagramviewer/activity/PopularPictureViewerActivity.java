@@ -1,9 +1,9 @@
-package com.codepath.simpleinstagramviewer.ui;
+package com.codepath.simpleinstagramviewer.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.codepath.simpleinstagramviewer.R;
 import com.codepath.simpleinstagramviewer.adapter.DividerItemDecoration;
-import com.codepath.simpleinstagramviewer.adapter.PopularPictureViewerAdapter;
-import com.codepath.simpleinstagramviewer.jsonhandler.DataLoader;
+import com.codepath.simpleinstagramviewer.data.DataLoader;
 
-import java.util.logging.Handler;
+import java.lang.ref.WeakReference;
 
 public class PopularPictureViewerActivity extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener {
@@ -47,7 +44,7 @@ public class PopularPictureViewerActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 swipeContainer.setRefreshing(true);
-                DataLoader.fetchPopularPhotos(PopularPictureViewerActivity.this, true);
+                DataLoader.fetchPopularPhotos(new WeakReference<Context>(PopularPictureViewerActivity.this), true);
             }
         });
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -62,18 +59,18 @@ public class PopularPictureViewerActivity extends AppCompatActivity implements
                 false));
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this));
-        DataLoader.fetchPopularPhotos(this, false);
+        DataLoader.fetchPopularPhotos(new WeakReference<Context>(this), false);
     }
 
     @Override
     public void onRefresh() {
-        DataLoader.fetchPopularPhotos(this, true);
+        DataLoader.fetchPopularPhotos(new WeakReference<Context>(this), true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        DataLoader.checkRefreshStatus(this);
+        DataLoader.checkRefreshStatus(new WeakReference<PopularPictureViewerActivity>(this));
     }
 
     public SwipeRefreshLayout getSwipeContainer() {

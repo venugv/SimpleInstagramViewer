@@ -14,21 +14,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.model.InstagramPicture;
-import com.codepath.simpleinstagramviewer.model.InstagramPictureComment;
-import com.codepath.simpleinstagramviewer.ui.PictureDetailActivity;
+import com.codepath.simpleinstagramviewer.data.PopularPicture;
+import com.codepath.simpleinstagramviewer.data.PictureComment;
+import com.codepath.simpleinstagramviewer.activity.PictureDetailActivity;
 
 /**
  * Created by vvenkatraman on 11/23/15.
  */
 public class PictureDetailAdapter extends RecyclerView.Adapter<PictureDetailViewHolder> {
     private PictureDetailActivity activity;
-    private InstagramPicture instagramPicture;
+    private PopularPicture popularPicture;
     private LayoutInflater inflater;
 
-    public PictureDetailAdapter(PictureDetailActivity activity, InstagramPicture instagramPicture) {
+    public PictureDetailAdapter(PictureDetailActivity activity, PopularPicture popularPicture) {
         this.activity = activity;
-        this.instagramPicture = instagramPicture;
+        this.popularPicture = popularPicture;
         this.inflater = LayoutInflater.from(activity);
     }
 
@@ -48,17 +48,17 @@ public class PictureDetailAdapter extends RecyclerView.Adapter<PictureDetailView
     @Override
     public void onBindViewHolder(final PictureDetailViewHolder holder, int position) {
         if (position == 0) {
-            Glide.with(activity).load(instagramPicture.getImageURL())
+            Glide.with(activity).load(popularPicture.getImageURL())
                     .asBitmap()
                     .placeholder(R.color.imagePlaceholder)
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.previewPic);
 
-            holder.imageCaption.setText(instagramPicture.getCaption());
-            holder.likeCount.setText(instagramPicture.getLikes() + " likes");
-            holder.commentCount.setText(instagramPicture.getCommentsCount() + " comments");
-            if (instagramPicture.getVideoURL() != null ) {
+            holder.imageCaption.setText(popularPicture.getCaption());
+            holder.likeCount.setText(popularPicture.getLikes() + " likes");
+            holder.commentCount.setText(popularPicture.getCommentsCount() + " comments");
+            if (popularPicture.getVideoURL() != null ) {
                 holder.playButton.setVisibility(View.VISIBLE);
                 holder.itemView.setOnClickListener(holder);
                 holder.position = activity.getPosition();
@@ -66,7 +66,7 @@ public class PictureDetailAdapter extends RecyclerView.Adapter<PictureDetailView
                 holder.itemView.setOnClickListener(null);
             }
         } else {
-            InstagramPictureComment comment = instagramPicture.getComments().get(position - 1);
+            PictureComment comment = popularPicture.getComments().get(position - 1);
             Glide.with(activity).load(comment.getProfilePicURL())
                     .asBitmap()
                     .centerCrop()
@@ -99,6 +99,6 @@ public class PictureDetailAdapter extends RecyclerView.Adapter<PictureDetailView
 
     @Override
     public int getItemCount() {
-        return 1 + instagramPicture.getComments().size();
+        return 1 + popularPicture.getComments().size();
     }
 }

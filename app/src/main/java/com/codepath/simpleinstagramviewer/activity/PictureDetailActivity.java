@@ -1,4 +1,4 @@
-package com.codepath.simpleinstagramviewer.ui;
+package com.codepath.simpleinstagramviewer.activity;
 
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -8,7 +8,6 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.MenuItem;
@@ -20,10 +19,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.simpleinstagramviewer.R;
 import com.codepath.simpleinstagramviewer.adapter.DividerItemDecoration;
-import com.codepath.simpleinstagramviewer.adapter.PictureDetailAdapter;
 import com.codepath.simpleinstagramviewer.adapter.PopularPictureViewerAdapter;
-import com.codepath.simpleinstagramviewer.jsonhandler.DataLoader;
-import com.codepath.simpleinstagramviewer.model.InstagramPicture;
+import com.codepath.simpleinstagramviewer.data.DataLoader;
+import com.codepath.simpleinstagramviewer.data.PopularPicture;
 
 public class PictureDetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "ExtraPosition";
@@ -54,8 +52,8 @@ public class PictureDetailActivity extends AppCompatActivity {
         this.personName = (TextView) findViewById(R.id.personName);
         this.elapsedTime = (TextView) findViewById(R.id.elapsedTime);
 
-        InstagramPicture instagramPicture = DataLoader.getPicture(position);
-        init(instagramPicture);
+        PopularPicture popularPicture = DataLoader.getPicture(position);
+        init(popularPicture);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
                 false));
         recyclerView.addItemDecoration(
@@ -74,8 +72,8 @@ public class PictureDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void init(InstagramPicture instagramPicture) {
-        Glide.with(this).load(instagramPicture.getProfilePicURL())
+    private void init(PopularPicture popularPicture) {
+        Glide.with(this).load(popularPicture.getProfilePicURL())
                 .asBitmap()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -89,8 +87,8 @@ public class PictureDetailActivity extends AppCompatActivity {
                     }
                 });
 
-        this.personName.setText(instagramPicture.getUsername());
-        this.elapsedTime.setText(PopularPictureViewerAdapter.getElapsedTime(instagramPicture.getSubmittedTime()));
+        this.personName.setText(popularPicture.getUsername());
+        this.elapsedTime.setText(PopularPictureViewerAdapter.getElapsedTime(popularPicture.getSubmittedTime()));
     }
 
     public RecyclerView getRecyclerView() {

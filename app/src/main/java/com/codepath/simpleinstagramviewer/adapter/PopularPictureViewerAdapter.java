@@ -20,8 +20,8 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.model.InstagramPicture;
-import com.codepath.simpleinstagramviewer.model.InstagramPictureComment;
+import com.codepath.simpleinstagramviewer.data.PopularPicture;
+import com.codepath.simpleinstagramviewer.data.PictureComment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,10 +33,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPictureViewHolder> {
     private Context context;
-    private ArrayList<InstagramPicture> data;
+    private ArrayList<PopularPicture> data;
     private LayoutInflater inflater;
 
-    public PopularPictureViewerAdapter(Context context, ArrayList<InstagramPicture> data) {
+    public PopularPictureViewerAdapter(Context context, ArrayList<PopularPicture> data) {
         this.context = context;
         this.data = data;
         inflater = LayoutInflater.from(context);
@@ -55,7 +55,7 @@ public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPic
 
     @Override
     public void onBindViewHolder(final PopularPictureViewHolder holder, int position) {
-        InstagramPicture item = data.get(position);
+        PopularPicture item = data.get(position);
         Glide.with(context).load(item.getProfilePicURL())
                 .asBitmap()
                 .centerCrop()
@@ -93,7 +93,7 @@ public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPic
         holder.likeCount.setText(item.getLikes() + " likes");
 
         if (item.getCommentsCount() > 0) {
-            InstagramPictureComment comment = item.getComments().get(0);
+            PictureComment comment = item.getComments().get(0);
             Glide.with(context).load(comment.getProfilePicURL())
                     .asBitmap()
                     .placeholder(R.color.imagePlaceholder)

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/listBg"
     android:padding="5dp"
-    tools:activity="com.codepath.simpleinstagramviewer.ui.PictureDetailActivity">
+    tools:activity="com.codepath.simpleinstagramviewer.activity.PictureDetailActivity">
 
     <ImageView
         android:id="@+id/userProfile"

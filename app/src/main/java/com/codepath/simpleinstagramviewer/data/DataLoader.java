@@ -1,14 +1,13 @@
-package com.codepath.simpleinstagramviewer.jsonhandler;
+package com.codepath.simpleinstagramviewer.data;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.codepath.simpleinstagramviewer.adapter.PictureDetailAdapter;
 import com.codepath.simpleinstagramviewer.adapter.PopularPictureViewerAdapter;
-import com.codepath.simpleinstagramviewer.model.InstagramPicture;
-import com.codepath.simpleinstagramviewer.model.InstagramPictureComment;
-import com.codepath.simpleinstagramviewer.ui.PictureDetailActivity;
-import com.codepath.simpleinstagramviewer.ui.PopularPictureViewerActivity;
+import com.codepath.simpleinstagramviewer.activity.PictureDetailActivity;
+import com.codepath.simpleinstagramviewer.activity.PopularPictureViewerActivity;
+import com.codepath.simpleinstagramviewer.activity.SplashActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -17,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -32,11 +32,11 @@ public class DataLoader {
     private static boolean requestPending = false;
     private static long lastRefreshTime = -1;
 
-    private static ArrayList<InstagramPicture> pictureArrayList = new ArrayList<>();
+    private static ArrayList<PopularPicture> pictureArrayList = new ArrayList<>();
 
-    public static void fetchPopularPhotos(final Context context, boolean refresh) {
+    public static void fetchPopularPhotos(final WeakReference<Context> contextRef, boolean refresh) {
         if (!refresh || requestPending) {
-            updateRecyclerView(context);
+            updateActivity(contextRef);
             return;
         }
         pictureArrayList.clear();
@@ -54,7 +54,7 @@ public class DataLoader {
                     data = response.getJSONArray("data");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject photo = data.getJSONObject(i);
-                        InstagramPicture instagramPhoto = new InstagramPicture();
+                        PopularPicture instagramPhoto = new PopularPicture();
                         if (!photo.isNull("id")) {
                             instagramPhoto.setId(photo.getString("id"));
                         }
@@ -87,7 +87,7 @@ public class DataLoader {
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
-                updateRecyclerView(context);
+                updateActivity(contextRef);
             }
 
             @Override
@@ -100,7 +100,7 @@ public class DataLoader {
     }
 
     public static void fetchCommentsForPhoto(final PictureDetailActivity activity, int position) {
-        final InstagramPicture picture = getPicture(position);
+        final PopularPicture picture = getPicture(position);
         if (picture == null) {
             return;
         }
@@ -133,12 +133,12 @@ public class DataLoader {
         });
     }
 
-    private static void extractComments(JSONArray comments, InstagramPicture instagramPhoto, int count) throws JSONException {
+    private static void extractComments(JSONArray comments, PopularPicture instagramPhoto, int count) throws JSONException {
         if (count > 0) {
             for (int j = comments.length() - 1; j > -1; j--) {
                 JSONObject comment = comments.getJSONObject(j);
                 instagramPhoto.getComments().add(
-                        new InstagramPictureComment(comment.getString("text"),
+                        new PictureComment(comment.getString("text"),
                                 comment.getJSONObject("from").getString("username"),
                                 comment.getJSONObject("from").getString("profile_picture"),
                                 comment.getString("created_time")));
@@ -146,7 +146,8 @@ public class DataLoader {
         }
     }
 
-    private static void updateRecyclerView(Context context) {
+    private static void updateActivity(WeakReference<Context> contextRef) {
+        Context context = contextRef.get();
         if (context instanceof PopularPictureViewerActivity && !requestPending) {
             PopularPictureViewerActivity activity = (PopularPictureViewerActivity) context;
             PopularPictureViewerAdapter adapter = new PopularPictureViewerAdapter(context,
@@ -154,23 +155,30 @@ public class DataLoader {
             activity.getRecyclerView().setAdapter(adapter);
             adapter.notifyDataSetChanged();
             activity.getSwipeContainer().setRefreshing(false);
+        } else if (context instanceof SplashActivity) {
+            SplashActivity splashActivity = (SplashActivity) context;
+            splashActivity.onLoadFinished();
         }
     }
 
-    public static void checkRefreshStatus(PopularPictureViewerActivity activity) {
+    public static void checkRefreshStatus(WeakReference<PopularPictureViewerActivity> activityRef) {
         long currentTime = Calendar.getInstance(Locale.getDefault()).getTimeInMillis();
         long elapsedTime = currentTime - lastRefreshTime;
+        PopularPictureViewerActivity activity = activityRef.get();
+        if (activity == null) {
+            return;
+        }
         if (!requestPending && elapsedTime > 20000/*20 seconds*/) {
             activity.getSwipeContainer().setRefreshing(true);
-            fetchPopularPhotos(activity, true);
+            fetchPopularPhotos(new WeakReference<Context>(activity), true);
         }
     }
 
-    public static ArrayList<InstagramPicture> getAllPopularPhotos() {
+    public static ArrayList<PopularPicture> getAllPopularPhotos() {
         return pictureArrayList;
     }
 
-    public static InstagramPicture getPicture(int key) {
+    public static PopularPicture getPicture(int key) {
         return pictureArrayList.get(key);
     }
 }

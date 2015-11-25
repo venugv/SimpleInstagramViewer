@@ -1,17 +1,14 @@
 package com.codepath.simpleinstagramviewer.adapter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.ui.PictureDetailActivity;
-import com.codepath.simpleinstagramviewer.ui.VideoPlayerActivity;
+import com.codepath.simpleinstagramviewer.activity.PictureDetailActivity;
+import com.codepath.simpleinstagramviewer.activity.VideoPlayerActivity;
 
 /**
  * Created by vvenkatraman on 11/14/15.
