@@ -20,8 +20,8 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.codepath.simpleinstagramviewer.R;
-import com.codepath.simpleinstagramviewer.data.PopularPicture;
 import com.codepath.simpleinstagramviewer.data.PictureComment;
+import com.codepath.simpleinstagramviewer.data.PopularPicture;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +40,27 @@ public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPic
         this.context = context;
         this.data = data;
         inflater = LayoutInflater.from(context);
+    }
+
+    public static String getElapsedTime(String time) {
+        Calendar submittedTimeInstance = Calendar.getInstance();
+        submittedTimeInstance.setTimeInMillis(Long.parseLong(time));
+        Date submittedTime = submittedTimeInstance.getTime();
+        long diffInMs = (new Date(System.currentTimeMillis()).getTime() / 1000) - submittedTime.getTime();
+
+        long diffInDays = TimeUnit.SECONDS.toDays(diffInMs);
+        if (diffInDays > 0) {
+            return diffInDays + "d";
+        }
+        long diffInHour = TimeUnit.SECONDS.toHours(diffInMs);
+        if (diffInHour > 0) {
+            return diffInHour + "h";
+        }
+        long diffInMin = TimeUnit.SECONDS.toMinutes(diffInMs);
+        if (diffInMin > 0) {
+            return diffInMin + "m";
+        }
+        return diffInMs + "s";
     }
 
     @Override
@@ -76,6 +97,7 @@ public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPic
         holder.elapsedTime.setText(getElapsedTime(item.getSubmittedTime()));
 
         Glide.with(context).load(data.get(position).getImageURL())
+                .asBitmap()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.color.imagePlaceholder)
@@ -113,27 +135,6 @@ public class PopularPictureViewerAdapter extends RecyclerView.Adapter<PopularPic
                     "</b></font>" + " " + comment.getComment();
             holder.comment.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         }
-    }
-
-    public static String getElapsedTime(String time) {
-        Calendar submittedTimeInstance = Calendar.getInstance();
-        submittedTimeInstance.setTimeInMillis(Long.parseLong(time));
-        Date submittedTime = submittedTimeInstance.getTime();
-        long diffInMs = (new Date(System.currentTimeMillis()).getTime() / 1000) - submittedTime.getTime();
-
-        long diffInDays = TimeUnit.SECONDS.toDays(diffInMs);
-        if (diffInDays > 0) {
-            return diffInDays + "d";
-        }
-        long diffInHour = TimeUnit.SECONDS.toHours(diffInMs);
-        if (diffInHour > 0) {
-            return diffInHour + "h";
-        }
-        long diffInMin = TimeUnit.SECONDS.toMinutes(diffInMs);
-        if (diffInMin > 0) {
-            return diffInMin + "m";
-        }
-        return diffInMs + "s";
     }
 
     @Override
