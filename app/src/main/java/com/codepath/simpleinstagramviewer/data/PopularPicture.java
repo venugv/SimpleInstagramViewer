@@ -1,7 +1,5 @@
 package com.codepath.simpleinstagramviewer.data;
 
-import com.codepath.simpleinstagramviewer.data.PictureComment;
-
 import java.util.ArrayList;
 
 /**
@@ -9,17 +7,17 @@ import java.util.ArrayList;
  */
 public class PopularPicture {
     String username;
-    private String type;
     String caption;
     String imageURL;
-    private String videoURL;
     int imageHeight;
     int likes;
     String profilePicURL;
     String submittedTime;
     int commentsCount;
-    private String id;
     ArrayList<PictureComment> comments = new ArrayList<PictureComment>();
+    private String type;
+    private String videoURL;
+    private String id;
 
     public int getCommentsCount() {
         return commentsCount;

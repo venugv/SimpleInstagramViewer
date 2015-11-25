@@ -5,15 +5,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.codepath.simpleinstagramviewer.adapter.PictureDetailAdapter;
-import com.codepath.simpleinstagramviewer.adapter.PopularPictureViewerAdapter;
 import com.codepath.simpleinstagramviewer.activity.PictureDetailActivity;
 import com.codepath.simpleinstagramviewer.activity.PopularPictureViewerActivity;
 import com.codepath.simpleinstagramviewer.activity.SplashActivity;
+import com.codepath.simpleinstagramviewer.adapter.PictureDetailAdapter;
+import com.codepath.simpleinstagramviewer.adapter.PopularPictureViewerAdapter;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +21,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by vvenkatraman on 11/17/15.
