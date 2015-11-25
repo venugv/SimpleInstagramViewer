@@ -1,6 +1,8 @@
 package com.codepath.simpleinstagramviewer.data;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.codepath.simpleinstagramviewer.adapter.PictureDetailAdapter;
@@ -46,48 +48,16 @@ public class DataLoader {
         lastRefreshTime = Calendar.getInstance().getTimeInMillis();
         client.get(request_url, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 requestPending = false;
-                JSONArray data = null;
-                try {
-                    data = response.getJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject photo = data.getJSONObject(i);
-                        PopularPicture instagramPhoto = new PopularPicture();
-                        if (!photo.isNull("id")) {
-                            instagramPhoto.setId(photo.getString("id"));
-                        }
-                        instagramPhoto.setUsername(photo.getJSONObject("user").getString("username"));
-                        if (!photo.isNull("caption")) {
-                            instagramPhoto.setCaption(photo.getJSONObject("caption").getString("text"));
-                        } else {
-                            instagramPhoto.setCaption("");
-                        }
-                        if (!photo.isNull("comments")) {
-                            int count = photo.getJSONObject("comments").getInt("count");
-                            instagramPhoto.setCommentsCount(count);
-                            JSONArray comments = photo.getJSONObject("comments").getJSONArray("data");
-                            extractComments(comments, instagramPhoto, count);
-                        }
-                        instagramPhoto.setType(photo.getString("type"));
-                        if (instagramPhoto.getType().equals("video")) {
-                            instagramPhoto.setVideoURL(photo.getJSONObject("videos").
-                                    getJSONObject("standard_resolution").getString("url"));
-                        }
-                        instagramPhoto.setSubmittedTime(photo.getString("created_time"));
-                        instagramPhoto.setProfilePicURL(photo.getJSONObject("user").getString("profile_picture"));
-                        instagramPhoto.setLikes(photo.getJSONObject("likes").getInt("count"));
-                        instagramPhoto.setImageURL(photo.getJSONObject("images").
-                                getJSONObject("standard_resolution").getString("url"));
-                        instagramPhoto.setImageHeight(photo.getJSONObject("images").
-                                getJSONObject("standard_resolution").getInt("height"));
-                        pictureArrayList.add(instagramPhoto);
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        DataLoader.parseResponse(response, contextRef);
                     }
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
-                }
-                updateActivity(contextRef);
+                };
+                new Thread(r).start();
             }
 
             @Override
@@ -95,6 +65,54 @@ public class DataLoader {
                 Log.e(TAG, "Response failed. Status Code : " + statusCode);
                 Log.e(TAG, "Response failed. " + responseString);
                 requestPending = false;
+            }
+        });
+    }
+
+    private static void parseResponse(JSONObject response, final WeakReference<Context> contextRef) {
+        JSONArray data = null;
+        try {
+            data = response.getJSONArray("data");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject photo = data.getJSONObject(i);
+                PopularPicture instagramPhoto = new PopularPicture();
+                if (!photo.isNull("id")) {
+                    instagramPhoto.setId(photo.getString("id"));
+                }
+                instagramPhoto.setUsername(photo.getJSONObject("user").getString("username"));
+                if (!photo.isNull("caption")) {
+                    instagramPhoto.setCaption(photo.getJSONObject("caption").getString("text"));
+                } else {
+                    instagramPhoto.setCaption("");
+                }
+                if (!photo.isNull("comments")) {
+                    int count = photo.getJSONObject("comments").getInt("count");
+                    instagramPhoto.setCommentsCount(count);
+                    JSONArray comments = photo.getJSONObject("comments").getJSONArray("data");
+                    extractComments(comments, instagramPhoto, count);
+                }
+                instagramPhoto.setType(photo.getString("type"));
+                if (instagramPhoto.getType().equals("video")) {
+                    instagramPhoto.setVideoURL(photo.getJSONObject("videos").
+                            getJSONObject("standard_resolution").getString("url"));
+                }
+                instagramPhoto.setSubmittedTime(photo.getString("created_time"));
+                instagramPhoto.setProfilePicURL(photo.getJSONObject("user").getString("profile_picture"));
+                instagramPhoto.setLikes(photo.getJSONObject("likes").getInt("count"));
+                instagramPhoto.setImageURL(photo.getJSONObject("images").
+                        getJSONObject("standard_resolution").getString("url"));
+                instagramPhoto.setImageHeight(photo.getJSONObject("images").
+                        getJSONObject("standard_resolution").getInt("height"));
+                pictureArrayList.add(instagramPhoto);
+            }
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                updateActivity(contextRef);
             }
         });
     }
