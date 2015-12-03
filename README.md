@@ -1,4 +1,4 @@
-# SimpleTodo
+# SimpleInstagramViewer
 A sample Instagram viewer project for CodePath
 
 This is an Android demo application for displaying the latest popular posts from Instagram.
