@@ -1,7 +1,7 @@
 # SimpleTodo
-A sample TodoList project for CodePath
+A sample Instagram viewer project for CodePath
 
-This is an Android demo application for displaying the latest box office movies using the [RottenTomatoes API](http://www.rottentomatoes.com/). See the [RottenTomatoes Networking Tutorial](http://guides.thecodepath.com/android/RottenTomatoes-Networking-Tutorial) on our cliffnotes for a step-by-step tutorial.
+This is an Android demo application for displaying the latest popular posts from Instagram.
 
 ## User Stories
 
